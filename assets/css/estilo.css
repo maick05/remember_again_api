@@ -1,0 +1,404 @@
+
+#sair:hover{
+    text-decoration:underline;
+}
+
+.letra{
+	width: 60px !important;
+	height: 60px !important;
+	text-align: center !important;
+	font-size: 40px !important;
+	line-height: 60px !important;
+	border: 2px solid black !important;
+	border-radius: 8px !important;
+	box-shadow: 3px 3px #888888 !important;
+}
+
+.tecla{
+	padding: 0;
+}
+
+.letra:hover
+{
+	filter: brightness(85%);
+}
+
+.botaonovo-space
+{
+	box-shadow: 0 0 0 0 rgba(34,36,38,.15) inset;
+	color: #fff;
+	text-shadow: none;
+	background-image: none;
+	background: #21ba45;
+	vertical-align: bottom;
+	font-size: x-small;
+	padding: 0;
+	border-radius: 57px;
+	font-size: small;
+	text-align: center;
+	min-height: 20px;
+	min-width: 21px;
+	padding-top: 0.75% !important;
+}
+
+.new
+{
+	color: blue;
+	text-decoration: underline;
+	font-size: small;
+	margin-left: 14px;
+}
+.centro 
+{
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+} 
+
+body, body.pushable>.pusher {
+
+    background: url('../img/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.sobra{
+    height: 100%;
+    background: blue;
+}
+
+input{
+    /* border: 0.5px solid gray !important; */
+}
+
+.mob-div{
+    min-width: 40%; 
+    max-width: 90%;
+    border-radius: 9px !important;
+    margin-top:40px !important;
+}
+
+.row-seg{
+    display: block !important;
+}
+
+.div-pad{
+    margin-top: 10px;
+}
+
+@media screen and (max-width: 1300px)
+{
+    .mob-div{
+        min-width: 60% !important;
+    }
+}
+
+@media screen and (max-width: 350px)
+{
+    .cron{
+        font-size: 12px !important;
+    }
+
+    .versus{
+        margin-left: 8% !important;
+        /* margin-right:  !important; */
+        font-size: 8pt;
+    }
+    .nome-time{
+        font-size: 9pt;
+    }
+
+    .dt{
+        font-size: 9pt;
+    }
+    .casa{
+        margin-left: -13px !important;
+    }
+}
+
+@media screen and (max-width: 473px)
+{
+    .versus{
+        margin-left: 6.5% ;
+        margin-right: 1px ;
+    }
+    .col-esc-out{
+        margin-left: 0 !important;
+    }
+
+    .thead{
+        font-size: 11.5px;
+    }
+
+    .thead > span, .ult > span
+    {
+        margin-left: -0.6em;
+    }
+
+    .cron{
+        font-size: 13px;
+    }
+
+    .data-jogo{
+        margin-left: -10pt !important;
+        margin-right: 10pt;
+    }
+
+    
+    .hund{
+        margin-left: -0.45em;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    #sair{
+        margin-left: -50%;
+    }
+    .div-pad{
+        padding: 4.5pt !important;
+    }
+    .ui.column{
+        width:90% !important;
+    }
+    .mob-div{
+        padding: 0 !important;
+    }
+    .seg-mob{
+        padding: 0 !important;
+    }
+    .nome-time{
+        font-size: 12px !important;
+        max-width: 80px !important;
+        margin-left: -12px;
+    }
+    .fora{
+        margin-left: 0px;
+    }
+    .escudo{
+        margin-top: -5px !important;
+        margin-left: auto;
+    }
+    .versus
+    {
+        min-width: 50px !important;
+    }
+    .col-esc-out{
+        margin-left: 1% !important;
+    }
+
+    .col-esc-home{
+        margin-left: -4% !important;
+    }
+
+    .input-palpite{
+        width: 45px !important;
+    }
+
+    .golfora{
+        margin-left: -25px !important;
+    }
+
+    .div-btn{
+        margin-left: -20px !important;
+    }
+
+    .col-gf{
+        padding-left: 1em !important;
+    }
+
+    .col-gc{
+        /* padding-right: 1em; */
+    }
+
+    .select-jg{
+        max-width: 60%;
+    }
+    .data-jogo{
+        margin-left: 0px;
+    }
+}
+/* 
+
+@media screen and (min-width: 451px and max-width: 720px) {
+    .ui.column{
+        width:90% !important;
+    }
+    .mob-div{
+        max-width: 95%;
+        padding: 7pt !important;
+    }
+    .seg-mob{
+        padding: 0 !important;
+    }
+    .nome-time{
+        font-size: 12px !important;
+    }
+    .escudo{
+        margin-top: -5px !important;
+        margin-left: auto;
+    }
+    .versus
+    {
+        margin-left: 5% !important;
+        max-width: 10px !important;
+    }
+    .col-esc-out{
+        margin-left: 3% !important;
+        margin-left: 1% !important;
+    }
+
+    .col-esc-home{
+        margin-left: -2% !important;
+    }
+
+    .input-palpite{
+        min-width: 40px !important;
+        max-width: 40px !important;
+    }
+
+    .div-btn{
+        margin-left: -20px !important;
+    }
+} */
+
+.escudo{
+    width: 50px;
+    margin-top: -9.799px;
+    min-width: 40px;
+    max-width: 45px;
+}
+
+.btn-icon{
+    width: 1px !important;
+    
+}
+
+.icon-btn{
+    margin-left: -6px !important;
+}
+
+.div-btn{
+    width: 20px !important;
+    margin-left: -6%;
+    margin-top: -5px;
+}
+
+.data-jogo{
+    text-align: left !important;
+    margin-left: 7%;
+    width:100%;
+}
+
+.input-palpite{
+    margin-top: -10px !important;
+    min-width: 60px;
+    max-width: 60px;
+}
+.versus
+{
+    max-width: 72px;
+}
+.nome-time{
+    font-size: 17px;
+    max-width: 50px;
+    margin-top: -50%;
+    font-weight: bold;
+}
+
+.col-esc-out{
+    margin-left: 15px;
+}
+
+.cron{
+    background: #2185D0;
+    border-radius: 9px;
+    color: white;
+    height: 1.5em;
+}
+
+.user-badge{
+    background: lightgray;
+    border-radius: 9px;
+    line-height: 2.5em;
+    height: 2.5em;
+    text-justify: auto;
+    /* min-width: 10%; */
+    padding-left: 1em;
+}
+
+.point-badge{
+    border-radius: 18px;
+    background: green;
+    color: white;
+    padding: 5px;
+}
+
+.txt-user
+{
+    margin: 10px;
+}
+
+
+
+@media screen and (min-width: 780px) {
+    .col-gf{
+        padding-left: 0px !important;
+    }
+}
+
+
+@keyframes piscar {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0; }
+}
+.piscar {
+  -webkit-animation: piscar .75s linear infinite;
+  -moz-animation: piscar .75s linear infinite;
+  -ms-animation: piscar .75s linear infinite;
+  -o-animation: piscar .75s linear infinite;
+  animation: piscar .75s linear infinite;
+}
+
+.sidebar{
+    z-index: 3;
+}
+
+.thead{
+    font-weight: bold;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    background: #e6e6e6;
+}
+
+.resul{
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+}
+
+.first, .last{
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+}
+
+.middle2{
+    border-right: 1px solid lightgray;
+}
+
+.coluna{
+    
+}
+
+.pos{
+    color: blue;
+    background: #e6e6e6;
+}
+
+.invis{
+    display: none !important;
+}
+
