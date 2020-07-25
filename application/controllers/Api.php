@@ -12,14 +12,21 @@ class Api extends CI_Controller
 
 		try {
 			$this->post = json_decode(file_get_contents('php://input'));
+
+			if(!$this->post)
+				$this->post = (object) $this->input->post();
+
 			$classe = ucfirst($classe);
 			$obj = new $classe();
 			$retorno = $obj->$acao();
+			$this->db->trans_commit();
 		}
 		catch (Error $e) {
+			$this->db->trans_rollback();
 			$retorno = returnMessage(false, $e->getMessage(), 'erroPHP', 'danger');
 		}
 		catch (Exception $e) {
+			$this->db->trans_rollback();
 			$retorno = returnMessage(false, $e->getMessage(), 'erroPHP', 'danger');
 		}
 		echo json_encode($retorno);

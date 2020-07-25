@@ -132,5 +132,11 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('Database', 'ApiDB', 'Dados', 'Words', 'Answers'
-);
+
+$arrClasses = array('Words', 'Answers');
+$arrDB = array('Database', 'ApiDB');
+
+$autoload['model'] = array('Dados', 'DBHelperApi');
+
+foreach ($arrClasses as $classe){$autoload['model'][] = 'classes/'.$classe;}
+foreach ($arrDB as $classe){$autoload['model'][] = 'database/'.$classe;}

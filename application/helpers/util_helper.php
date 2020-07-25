@@ -35,8 +35,9 @@ function setError($cond, $msg, &$erro='S')
 	return $msg;
 }
 
-function returnMessage($success, $message, $key, $type)
+function returnMessage($success, $message, $key, $type, $arrAdicional=array())
 {
+	$retorno = $arrAdicional;
 	$retorno['sucesso'] = $success;
 	$retorno['mensagem'] = $message;
 	$retorno['key'] = $key;

@@ -6,31 +6,19 @@ class Dados extends CI_Model
 	public $tabela;
 	public $arrDados = array();
 
-	public function getDadosPost()
-	{
-		return $arrDados;
-	}
+	public function getDadosPost(){return $this->arrDados;}
 
 	public function save()
 	{
 		$arr = $this->getDadosPost();
-		$acao = $this->post->acao;
-		$id = $this->post->id;
 
-		if($acao == 'incluir')
+		if($this->post->acao == 'incluir')
 			return $this->ApiDB->insert($arr, $this->tabela);
 		else
-			return $this->ApiDB->update($arr, $this->tabela, $id);
+			return $this->ApiDB->update($arr, $this->tabela, $this->post->id);
 	}
 
-	public function delete()
-	{
-		$id = $this->post->id;
-		return $this->ApiDB->delete($this->tabela, $id);
-	}
+	public function delete(){return $this->ApiDB->delete($this->tabela, $this->post->id);}
 
-	public function list()
-	{
-		return $this->ApiDB->getAll($this->tabela);
-	}
+	public function list(){return $this->ApiDB->getAll($this->tabela);}
 }
