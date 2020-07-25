@@ -55,6 +55,38 @@ class ApiDB extends CI_Model
 		return $retorno;
 	}
 
+	public function getAllByJoin($tabela, $valor, $arrJoins=[], $coluna='id', $select='*')
+	{
+		$this->db->select($select);
+		foreach($arrJoins as $join){
+			$this->db->join($join['tabela'], "ON {$join['tabela']}.{$join['coluna']} = {$tabela}.id");
+		}
+		$this->db->where($coluna, $valor);
+//		$arr['mensagem'] = $this->db->get_compiled_select($tabela);
+//		echo json_encode($arr);
+//		die;
+		$results = $this->db->get($tabela);
+
+		if($results)
+			$results = $results->result_array();
+		else
+			$results = [];
+
+		if(isset($this->db->error()['message']) && $this->db->error()['message'] && $this->db->error()['message'] != "")
+			$this->printError();
+
+
+		if(empty($results) || !$results)
+		{
+			$retorno = returnMessage(false, 'Nenhum registro encontrado!', 'empty', 'info');
+		}
+		else
+			$retorno = returnMessage(true, 'success!', 'arrayList', 'success');
+
+		$retorno['results'] = $results;
+		return $retorno;
+	}
+
 	public function delete($tabela, $id)
 	{
 		$this->db->where('id', $id);
