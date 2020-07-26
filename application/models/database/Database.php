@@ -12,7 +12,7 @@ class Database extends CI_Model
 		$dados = array_filter($dados);
 		$this->unsetArray($dados);
 		$this->db->insert($tabela, $dados);
-		return $this->getError() && $this->db->insert_id();
+		return !$this->getError() && $this->db->insert_id();
 	}
 
 	public function update($dados, $tabela, $where, $campowhere='id')

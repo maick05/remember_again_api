@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Answers extends Dados
 {
-	private $joinAnswersWord = array('tabela' => 'answersword', 'coluna' => 'idanswer');
+	private $joinAnswersCard = array('tabela' => 'answerscard', 'coluna' => 'idanswer');
 
 	function __construct()
 	{
@@ -19,11 +19,11 @@ class Answers extends Dados
 
 	public function getDadosPost()
 	{
-		$this->arrDados['resposta'] = $this->post->nome;
+		$this->arrDados['word'] = $this->post->nome;
 		return $this->arrDados;
 	}
 
-	public function listBy(){return $this->ApiDB->getAllByJoin($this->tabela, $this->post->id, array($this->joinAnswersWord), 'answersword.idword');}
+	public function listBy(){return $this->ApiDB->getAllByJoin($this->tabela, $this->post->id, array($this->joinAnswersCard), 'answerscard.idcard');}
 
 	public function save()
 	{
@@ -39,7 +39,7 @@ class Answers extends Dados
 		if($this->post->acao != 'incluir')
 			return $retorno;
 
-		return $this->vinculaAnswerToWord($this->post->idword, $retorno['insertId']);
+		return $this->vinculaAnswerToCard($this->post->idcard, $retorno['insertId']);
 	}
 
 	private function trataDuplicidade($palavra, $retornoInsert)
@@ -51,23 +51,18 @@ class Answers extends Dados
 		return $retorno;
 	}
 
-	public function vinculaAnswerToWord($idword, $idanswer)
+	public function vinculaAnswerToCard($idcard, $idanswer)
 	{
 		$this->setDicionarioErro();
-		$arr['idword'] = $idword;
+		$arr['idcard'] = $idcard;
 		$arr['idanswer'] = $idanswer;
-		return $this->ApiDB->insert($arr, 'answersword');
+		return $this->ApiDB->insert($arr, 'answerscard');
 	}
 
-	public function delete()
+	public function desvinculaAnswerFromCard()
 	{
-		$where = array(
-			'idanswer' => $this->post->idanswer,
-			'idword' => $this->post->idword
-		);
-
-		return $this->ApiDB->delete('answersword', $where);
+		return $this->ApiDB->delete('answerscard', $this->post->id);
 	}
 
-	public function getIdAnswer($palavra){return $this->ApiDB->getBy($this->tabela, $palavra, 'id', 'resposta')['registro'];}
+	public function getIdAnswer($palavra){return $this->ApiDB->getBy($this->tabela, $palavra, 'id', 'word')['registro'];}
 }

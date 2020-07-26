@@ -9,6 +9,12 @@ function pre($p, $die=true){
 		die;
 }
 
+function enc($p){
+	$arr['mensagem'] = $p;
+	echo json_encode($arr);
+	die;
+}
+
 function import($url, $type, $filemtype=true)
 {
 	if($filemtype)

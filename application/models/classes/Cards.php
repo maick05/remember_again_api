@@ -1,16 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Words extends Dados
+class Cards extends Dados
 {
 	function __construct()
 	{
-		$this->tabela = 'words';
+		$this->tabela = 'cards';
 	}
 
 	public function getDadosPost()
 	{
-		$this->arrDados['palavra'] = $this->post->nome;
+		$this->arrDados['word'] = $this->post->nome;
 		return $this->arrDados;
 	}
 }
