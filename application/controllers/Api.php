@@ -17,7 +17,7 @@ class Api extends CI_Controller
 				$this->post = (object) $this->input->post();
 
 			$classe = ucfirst($classe);
-			$obj = new $classe();
+			$obj = new $classe($this->post);
 			$retorno = $obj->$acao();
 			$this->db->trans_commit();
 		}

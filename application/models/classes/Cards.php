@@ -3,14 +3,46 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Cards extends Dados
 {
-	function __construct()
+	private $joinAnswersCard = array('tabela' => 'answerscard', 'coluna' => 'idcard');
+	private $joinAnswer = array('tabela' => 'answers', 'coluna' => 'id', 'tabelaJoin' => 'answerscard', 'colunaJoin' => 'idanswer');
+
+	function __construct($obj=false)
 	{
 		$this->tabela = 'cards';
+
+		if(!validaObj($obj))
+			return;
+
+		if(isset($obj->nome))
+			$this->arrDados['word'] = $obj->nome;
+
+		$this->setProp('id', $obj);
+		$this->setProp('acao', $obj);
 	}
 
-	public function getDadosPost()
+	public function listByContainer()
 	{
-		$this->arrDados['word'] = $this->post->nome;
-		return $this->arrDados;
+		$retorno = $this->ApiDB->getAllByJoin(
+			$this->tabela,
+			1,
+			array($this->joinAnswersCard, $this->joinAnswer),
+			1,
+			'cards.id, cards.word as card, answers.word as resposta, idcontainer');
+
+		$retorno['results'] = $this->trataResultCards($retorno['results']);
+		return $retorno;
+	}
+
+	public function trataResultCards($results)
+	{
+		$arr = array();
+		foreach ($results as $card){
+			$arr[$card['card']]['id'] = $card['id'];
+			$arr[$card['card']]['card'] = $card['card'];
+			$arr[$card['card']]['idcontainer'] = $card['idcontainer'];
+			$arr[$card['card']]['respostas'][] = $card['resposta'];
+		}
+
+		return array_values($arr);
 	}
 }

@@ -34,7 +34,6 @@ class ApiDB extends DBHelperApi
 	public function getAllByJoin($tabela, $valor, $arrJoins=[], $coluna='id', $select='*')
 	{
 		$results = $this->Database->getAllByJoin($tabela, $valor, $arrJoins, $coluna, $select);
-
 		if($this->Database->getError())
 			$this->printError();
 
@@ -49,10 +48,22 @@ class ApiDB extends DBHelperApi
 		return returnMessage(true, 'Registro deletado com sucesso!', 'deleted', 'success');
 	}
 
-	public function getBy($tabela, $valor, $select='*', $coluna='id')
+	public function getBy($tabela, $valor, $select='*', $coluna='id', $operador='=')
 	{
 		$this->db->select($select);
-		$this->db->where($coluna, $valor);
+		$this->db->where("{$coluna} {$operador}", $valor);
+		$row = $this->db->get($tabela);
+
+		if($this->Database->getError())
+			$this->printError();
+
+		return $this->trataRow($row);
+	}
+
+	public function getByJoin($tabela, $valor, $arrJoins=[], $coluna='id', $select='*')
+	{
+		$this->db->select($select);
+		$this->db->where("{$coluna}", $valor);
 		$row = $this->db->get($tabela);
 
 		if($this->Database->getError())

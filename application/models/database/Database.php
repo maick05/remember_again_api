@@ -9,7 +9,7 @@ class Database extends CI_Model
 
 	public function insert($dados, $tabela)
 	{
-		$dados = array_filter($dados);
+		$dados = array_filter($dados, 'strlen');
 		$this->unsetArray($dados);
 		$this->db->insert($tabela, $dados);
 		return !$this->getError() && $this->db->insert_id();
@@ -45,10 +45,22 @@ class Database extends CI_Model
 	public function getAllByJoin($tabela, $valor, $arrJoins=[], $coluna='id', $select='*')
 	{
 		$this->db->select($select);
-		foreach ($arrJoins as $join) {
-			$this->db->join($join['tabela'], "ON {$join['tabela']}.{$join['coluna']} = {$tabela}.id");
-		}
+
+		$this->montaJoin($arrJoins, $tabela);
+
 		$this->db->where($coluna, $valor);
+//		$this->ApiDB->getSql($tabela);
+		return $this->db->get($tabela);
+	}
+
+	public function getByJoin($tabela, $valor, $arrJoins=[], $coluna='id', $select='*')
+	{
+		$this->db->select($select);
+
+		$this->montaJoin($arrJoins, $tabela);
+
+		$this->db->where($coluna, $valor);
+//		$this->ApiDB->getSql($tabela);
 		return $this->db->get($tabela);
 	}
 
@@ -77,6 +89,22 @@ class Database extends CI_Model
 			{
 				unset($dados[$campo]);
 			}
+		}
+	}
+
+	public function montaJoin($arrJoins, $tabela)
+	{
+		foreach ($arrJoins as $join) {
+
+			$tabelaJoin = $tabela;
+			if(isset($join['tabelaJoin']))
+				$tabelaJoin = $join['tabelaJoin'];
+
+			$colunaJoin = 'id';
+			if(isset($join['colunaJoin']))
+				$colunaJoin = $join['colunaJoin'];
+
+			$this->db->join($join['tabela'], "ON {$join['tabela']}.{$join['coluna']} = {$tabelaJoin}.{$colunaJoin}");
 		}
 	}
 }

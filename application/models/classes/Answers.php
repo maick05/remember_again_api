@@ -4,10 +4,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Answers extends Dados
 {
 	private $joinAnswersCard = array('tabela' => 'answerscard', 'coluna' => 'idanswer');
+	public $idcard;
+	public $acerto;
+	public $resposta;
+	private $tabelaVinculo = 'answerscard';
+	private $tabelaLog = 'loganswers';
 
-	function __construct()
+	function __construct($obj=null)
 	{
 		$this->tabela = 'answers';
+
+		if(!validaObj($obj))
+			return;
+
+		if(isset($obj->nome))
+			$this->arrDados['word'] = $obj->nome;
+
+		$this->setProp('id', $obj);
+		$this->setProp('idcard', $obj);
+		$this->setProp('acerto', $obj);
+		$this->setProp('acao', $obj);
+		$this->setProp('resposta', $obj);
+		$this->setProp('idcontainer', $obj);
 	}
 
 	public function setDicionarioErro()
@@ -17,13 +35,7 @@ class Answers extends Dados
 		);
 	}
 
-	public function getDadosPost()
-	{
-		$this->arrDados['word'] = $this->post->nome;
-		return $this->arrDados;
-	}
-
-	public function listBy(){return $this->ApiDB->getAllByJoin($this->tabela, $this->post->id, array($this->joinAnswersCard), 'answerscard.idcard');}
+	public function listBy(){return $this->ApiDB->getAllByJoin($this->tabela, $this->idcard, array($this->joinAnswersCard), $this->tabelaVinculo.'.idcard');}
 
 	public function save()
 	{
@@ -33,13 +45,13 @@ class Answers extends Dados
 		$this->ApiDB->arrExpectedError = array('1062');
 
 		// Executa o metodo de salvar padrao usando a tabela do objeto
-		$retorno = $this->trataDuplicidade($this->post->nome, parent::save());
+		$retorno = $this->trataDuplicidade($this->arrDados['word'], parent::save());
 
 		// Se a ação for edição retorna da acao de update
-		if($this->post->acao != 'incluir')
+		if($this->acao != 'incluir')
 			return $retorno;
 
-		return $this->vinculaAnswerToCard($this->post->idcard, $retorno['insertId']);
+		return $this->vinculaAnswerToCard($this->idcard, $retorno['insertId']);
 	}
 
 	private function trataDuplicidade($palavra, $retornoInsert)
@@ -56,13 +68,57 @@ class Answers extends Dados
 		$this->setDicionarioErro();
 		$arr['idcard'] = $idcard;
 		$arr['idanswer'] = $idanswer;
-		return $this->ApiDB->insert($arr, 'answerscard');
+		return $this->ApiDB->insert($arr, $this->tabelaVinculo);
 	}
 
-	public function desvinculaAnswerFromCard()
-	{
-		return $this->ApiDB->delete('answerscard', $this->post->id);
-	}
+	public function desvinculaAnswerFromCard(){return $this->ApiDB->delete($this->tabelaVinculo, $this->id);}
 
 	public function getIdAnswer($palavra){return $this->ApiDB->getBy($this->tabela, $palavra, 'id', 'word')['registro'];}
+
+	public function logarTentativa($idanswer=false)
+	{
+		$arr['dtanswer'] = Date('Y-m-d h:i:s');
+		$arr['acerto'] = $this->acerto;
+		$arr['idcard'] = $this->idcard;
+		$arr['answer'] = $idanswer ? $idanswer : null;
+
+		$this->move();
+
+		return $this->ApiDB->insert($arr, $this->tabelaLog);
+	}
+
+	public function matchAnswer()
+	{
+		$respostas = $this->listBy();
+
+		//Verifica se tem respostas, se não tem retorna
+		if(empty($respostas['results']))
+			return $respostas;
+
+		//Pega a resposta e trata os espaços case
+		$this->resposta = strtolower(trim($this->resposta));
+		$respostas = arrayToLower(array_column($respostas['results'], 'word'));
+
+		//Trata retorno da mensagem
+		$this->acerto = in_array($this->resposta, $respostas);
+
+		$this->logarTentativa($this->resposta);
+
+		// Move o card para o proximo nivel do container
+		$this->move();
+
+		return returnMessage($this->acerto,
+			$this->acerto ? 'Parabéns! Você acertou.' : 'Que pena! Você Errou.',
+			'returnTry',
+			'',
+			array('acerto' => $this->acerto),
+			true);
+	}
+
+	public function move()
+	{
+		$obj = (object) array('id' => $this->idcontainer, 'idcard' => $this->idcard, 'acerto' => $this->acerto);
+		$container = new Containers($obj);
+		$container->moveCardToContainer();
+	}
 }

@@ -133,7 +133,7 @@ $autoload['language'] = array();
 |	$autoload['model'] = array('first_model' => 'first');
 */
 
-$arrClasses = array('Cards', 'Answers');
+$arrClasses = array('Cards', 'Answers', 'Containers');
 $arrDB = array('Database', 'ApiDB');
 
 $autoload['model'] = array('Dados', 'DBHelperApi');

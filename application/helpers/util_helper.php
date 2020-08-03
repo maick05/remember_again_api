@@ -30,6 +30,12 @@ function array_null($array)
 	}, $array);
 }
 
+function validaObj($obj)
+{
+	$obj = array_filter((array) $obj);
+	return !empty($obj) && $obj && $obj != null;
+}
+
 function setError($cond, $msg, &$erro='S')
 {
 	if($cond)
@@ -41,12 +47,14 @@ function setError($cond, $msg, &$erro='S')
 	return $msg;
 }
 
-function returnMessage($success, $message, $key, $type, $arrAdicional=array())
+function returnMessage($success, $message, $key, $type, $arrAdicional=array(), $validarSucess=false)
 {
 	$retorno = $arrAdicional;
 	$retorno['sucesso'] = $success;
 	$retorno['mensagem'] = $message;
 	$retorno['key'] = $key;
+	if($validarSucess)
+		$type = $success ? 'success' : 'danger';
 	$retorno['type'] = $type;
 	return $retorno;
 }
@@ -93,3 +101,5 @@ function doesMatch($op, $campo, $val)
 			break;
 	}
 }
+
+function arrayToLower($arr){return array_combine(array_map('strtolower', $arr), $arr);}

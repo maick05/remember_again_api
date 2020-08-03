@@ -13,9 +13,11 @@ class DBHelperApi extends CI_Model
 		return $message;
 	}
 
-	public function getSql($tabela)
+	public function getSql($pre=true)
 	{
-		$arr['mensagem'] = $this->db->get_compiled_select($tabela);
+		$arr['mensagem'] = $this->db->last_query();
+		if($pre)
+			pre($arr);
 		echo json_encode($arr);
 		die;
 	}
