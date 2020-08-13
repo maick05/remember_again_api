@@ -17,6 +17,7 @@ class Cards extends Dados
 			$this->arrDados['word'] = $obj->nome;
 
 		$this->setProp('id', $obj);
+		$this->setProp('idcontainer', $obj);
 		$this->setProp('acao', $obj);
 	}
 
@@ -24,9 +25,9 @@ class Cards extends Dados
 	{
 		$retorno = $this->ApiDB->getAllByJoin(
 			$this->tabela,
-			1,
+			$this->idcontainer,
 			array($this->joinAnswersCard, $this->joinAnswer),
-			1,
+			'idcontainer',
 			'cards.id, cards.word as card, answers.word as resposta, idcontainer');
 
 		$retorno['results'] = $this->trataResultCards($retorno['results']);

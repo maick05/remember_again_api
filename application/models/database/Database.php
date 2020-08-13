@@ -81,6 +81,21 @@ class Database extends CI_Model
 			return null;
 	}
 
+	public function getAllGroupBy($tabela, $colunaGroup, $exists=false, $orderBy='id', $nulo=false)
+	{
+		$this->db->select($colunaGroup.", COUNT(*) as qtd");
+
+		if(!$nulo)
+			$this->db->where($colunaGroup." IS NOT NULL");
+
+		$this->db->where($exists, null, false);
+
+		$this->db->group_by($colunaGroup);
+		$this->db->order_by($orderBy);
+
+		return $this->db->get($tabela);
+	}
+
 	private function unsetArray(&$dados)
 	{
 		foreach ($dados as $campo => $valor)

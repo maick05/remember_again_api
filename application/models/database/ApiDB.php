@@ -31,12 +31,22 @@ class ApiDB extends DBHelperApi
 		return $this->trataResults($results);
 	}
 
+	public function getAllGroupBy($tabela, $colunaGroup, $arrWhere, $orderBy='id',$nulo=false)
+	{
+		$results = $this->Database->getAllGroupBy($tabela, $colunaGroup, $arrWhere, $orderBy, $nulo);
+		if($this->Database->getError())
+			$this->printError();
+//		$this->getSql();
+
+		return $this->trataResults($results);
+	}
+
 	public function getAllByJoin($tabela, $valor, $arrJoins=[], $coluna='id', $select='*')
 	{
 		$results = $this->Database->getAllByJoin($tabela, $valor, $arrJoins, $coluna, $select);
 		if($this->Database->getError())
 			$this->printError();
-
+//		$this->getSql();
 		return $this->trataResults($results);
 	}
 
