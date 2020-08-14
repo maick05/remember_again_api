@@ -45,7 +45,7 @@ class Containers extends Dados
 	{
 		$where['or'] = array(
 			'#1' => 'dtanswer IS NULL',
-			"#2" => 'dtanswer <= DATE_SUB(NOW(), INTERVAL 16 HOUR)'
+			'#3' => $this->montaQueryPeriodo()
 		);
 
 		$exists = 'exists (select 1 from answerscard where answerscard.idcard  = cards.id)';
@@ -70,5 +70,17 @@ class Containers extends Dados
 		}
 
 		return $array;
+	}
+
+	public function montaQueryPeriodo()
+	{
+		$query = "`dtanswer` <= DATE_SUB(NOW(), INTERVAL 16 HOUR) AND
+				(
+				  (idcontainer = 1 AND dtanswer <= DATE_SUB(NOW(), INTERVAL 1 DAY))
+				  OR (idcontainer = 2 AND dtanswer <= DATE_SUB(NOW(), INTERVAL 7 DAY))
+				  OR (idcontainer = 3 AND dtanswer <= DATE_SUB(NOW(), INTERVAL 15 DAY))
+				  OR (idcontainer = 4 AND dtanswer <= DATE_SUB(NOW(), INTERVAL 30 DAY))
+				 )";
+		return $query;
 	}
 }

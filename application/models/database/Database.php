@@ -84,7 +84,7 @@ class Database extends CI_Model
 
 	public function getAllGroupBy($tabela, $colunaGroup, $where, $exists=false, $orderBy='id', $nulo=false)
 	{
-		$this->db->select($colunaGroup.", COUNT(*) as qtd");
+		$this->db->select($colunaGroup.", dtanswer, COUNT(*) as qtd");
 
 		if(!$nulo)
 			$this->db->where($colunaGroup." IS NOT NULL");
