@@ -42,13 +42,14 @@ class Database extends CI_Model
 		return $this->db->get($tabela);
 	}
 
-	public function getAllByJoin($tabela, $valor, $arrJoins=[], $coluna='id', $select='*')
+	public function getAllByJoin($tabela, $where=[], $arrJoins=[], $select='*')
 	{
 		$this->db->select($select);
 
 		$this->montaJoin($arrJoins, $tabela);
 
-		$this->db->where($coluna, $valor);
+		$this->montaWhere($where);
+
 //		$this->ApiDB->getSql($tabela);
 		return $this->db->get($tabela);
 	}
@@ -81,12 +82,14 @@ class Database extends CI_Model
 			return null;
 	}
 
-	public function getAllGroupBy($tabela, $colunaGroup, $exists=false, $orderBy='id', $nulo=false)
+	public function getAllGroupBy($tabela, $colunaGroup, $where, $exists=false, $orderBy='id', $nulo=false)
 	{
 		$this->db->select($colunaGroup.", COUNT(*) as qtd");
 
 		if(!$nulo)
 			$this->db->where($colunaGroup." IS NOT NULL");
+
+		$this->montaWhere($where);
 
 		$this->db->where($exists, null, false);
 
@@ -109,6 +112,9 @@ class Database extends CI_Model
 
 	public function montaJoin($arrJoins, $tabela)
 	{
+		if(empty($arrJoins))
+			return;
+
 		foreach ($arrJoins as $join) {
 
 			$tabelaJoin = $tabela;
@@ -120,6 +126,26 @@ class Database extends CI_Model
 				$colunaJoin = $join['colunaJoin'];
 
 			$this->db->join($join['tabela'], "ON {$join['tabela']}.{$join['coluna']} = {$tabelaJoin}.{$colunaJoin}");
+		}
+	}
+
+	public function montaWhere($where)
+	{
+		if(empty($where))
+			return;
+
+		if(isset($where['normal']))
+			$this->db->where($where['normal']);
+
+		if(isset($where['or'])){
+			$this->db->group_start();
+			foreach ($where['or'] as $key => $cond){
+				if(strstr($key, '#'))
+					$this->db->or_where($cond);
+				else
+					$this->db->or_where(array($key => $cond));
+			}
+			$this->db->group_end();
 		}
 	}
 }

@@ -103,3 +103,18 @@ function doesMatch($op, $campo, $val)
 }
 
 function arrayToLower($arr){return array_combine(array_map('strtolower', $arr), $arr);}
+
+function arrayTrim($arr){
+	$newArray = array();
+	foreach ($arr as $key => $value){
+		$newArray[trim($key)] = trim($value);
+	}
+	return $newArray;
+}
+
+function array_shift_key(&$arr){
+	$firstKey = current(array_keys($arr));
+	$firstElement = $arr[$firstKey];
+	unset($arr[$firstKey]);
+	return array($firstKey => $firstElement);
+}

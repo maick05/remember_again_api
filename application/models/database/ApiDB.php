@@ -41,9 +41,9 @@ class ApiDB extends DBHelperApi
 		return $this->trataResults($results);
 	}
 
-	public function getAllByJoin($tabela, $valor, $arrJoins=[], $coluna='id', $select='*')
+	public function getAllByJoin($tabela, $where, $arrJoins=[], $select='*')
 	{
-		$results = $this->Database->getAllByJoin($tabela, $valor, $arrJoins, $coluna, $select);
+		$results = $this->Database->getAllByJoin($tabela, $where, $arrJoins, $select);
 		if($this->Database->getError())
 			$this->printError();
 //		$this->getSql();

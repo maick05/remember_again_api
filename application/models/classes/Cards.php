@@ -23,11 +23,16 @@ class Cards extends Dados
 
 	public function listByContainer()
 	{
+		$where['normal'] = array('idcontainer' => $this->idcontainer);
+		$where['or'] = array(
+							'#1' => 'dtanswer IS NULL',
+							"#2" => 'dtanswer <= DATE_SUB(NOW(), INTERVAL 16 HOUR)'
+						);
+
 		$retorno = $this->ApiDB->getAllByJoin(
 			$this->tabela,
-			$this->idcontainer,
+			$where,
 			array($this->joinAnswersCard, $this->joinAnswer),
-			'idcontainer',
 			'cards.id, cards.word as card, answers.word as resposta, idcontainer');
 
 		$retorno['results'] = $this->trataResultCards($retorno['results']);

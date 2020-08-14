@@ -38,18 +38,23 @@ class Containers extends Dados
 	public function moveCardToContainer()
 	{
 		$nextContainer = $this->getContainerNextNivel();
-		return $this->ApiDB->update(array('idcontainer' => $nextContainer), 'cards', $this->idcard);
+		return $this->ApiDB->update(array('idcontainer' => $nextContainer, 'dtanswer' => date('Y-m-d H:i:s')), 'cards', $this->idcard);
 	}
 
 	public function getQtdCardsByContainer()
 	{
+		$where['or'] = array(
+			'#1' => 'dtanswer IS NULL',
+			"#2" => 'dtanswer <= DATE_SUB(NOW(), INTERVAL 16 HOUR)'
+		);
+
 		$exists = 'exists (select 1 from answerscard where answerscard.idcard  = cards.id)';
-		$arr = $this->ApiDB->getAllGroupBy('cards', 'idcontainer', $exists, 'idcontainer');
-		$arr['results'] = $this->formataArray($arr['results']);
+		$arr = $this->ApiDB->getAllGroupBy('cards', 'idcontainer', $where, $exists, 'idcontainer');
+		$arr['results'] = $this->formataArrayQtd($arr['results']);
 		return $arr;
 	}
 
-	public function formataArray($arr)
+	public function formataArrayQtd($arr)
 	{
 		$array = array(['qtd' => 0], ['qtd' => 0], ['qtd' => 0], ['qtd' => 0]);
 		foreach ($arr as $key => $value)
