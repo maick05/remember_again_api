@@ -127,6 +127,9 @@ class Database extends CI_Model
 		if(isset($where['normal']))
 			$this->db->where($where['normal']);
 
+		if(isset($where['all']))
+			$this->db->where($where['all']);
+
 		if(isset($where['or'])){
 			$this->db->group_start();
 			foreach ($where['or'] as $key => $cond){

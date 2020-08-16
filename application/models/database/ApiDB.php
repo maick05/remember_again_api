@@ -89,7 +89,8 @@ class ApiDB extends DBHelperApi
 		if($this->Database->getError())
 			$this->printError();
 
-//		$this->getSql();
+		//		$this->getSql();
+
 
 		return $this->trataRow($row);
 	}

@@ -58,7 +58,7 @@ class Api extends CI_Controller
 
 	public function verifyTokenApp($acao)
 	{
-		if(in_array($acao , array('login', 'logoff', 'createSession', 'register')))
+		if(in_array($acao , array('login', 'logoff', 'createSession', 'register', 'sendForgotPassword', 'verifyCode', 'updatePassword')))
 			return;
 
 		if(!$this->Users->createSession()) {

@@ -11,6 +11,8 @@ class Users extends Dados
 
 	public function login()
 	{
+		$this->criptografarSenha();
+
 		$where['normal'] = array('email' => $this->email, 'password' => $this->password);
 		$usuario = $this->ApiDB->get($this->tabela, $where, 'id, nome, email, senha, token, tokenapp')['registro'];
 
@@ -76,6 +78,7 @@ class Users extends Dados
 	public function register()
 	{
 		$this->acao = 'incluir';
+		$this->criptografarSenha();
 		$save = $this->save();
 
 		if($save['sucesso'])
@@ -98,5 +101,52 @@ class Users extends Dados
 		$this->ApiDB->dicionarioErro = array(
 			'1062' => 'Já existe um usuário cadastrado com esse email!'
 		);
+	}
+
+	public function criptografarSenha()
+	{
+		$this->password = md5(md5($this->config->item('chaveMestre')).md5($this->password));
+	}
+
+	public function sendForgotPassword()
+	{
+		$where['normal'] = array('email' => $this->email);
+		$usuario = $this->ApiDB->get($this->tabela, $where, 'id, email')['registro'];
+
+		if(empty($usuario)){
+			return returnMessage(false, 'Email não cadastrado no sistema!', 'emailNotFound', 'danger');
+		}
+
+		$codigo = rand(100000, 999999);
+		$arr = array('email' => $this->email, 'code' => $codigo);
+		$this->ApiDB->insert($arr, 'securitycodes');
+
+		$this->load->library('emailhelper');
+//		$this->emailhelper->send($this->email, 'Recuperação de senha!', 'Código de recuperação de senha: '.$codigo);
+
+		return returnMessage(true, 'Email enviado com sucesso!',	'sendCodeTrue', 'success');
+	}
+
+	public function verifyCode()
+	{
+		$where['normal'] = array('email' => $this->email, 'code' => $this->code, 'ativo' => 1);
+		$where['all'] = 'dtinsert >= DATE_SUB(NOW(), INTERVAL 3 HOUR)';
+		$code = $this->ApiDB->get('securitycodes', $where, 'id')['registro'];
+
+		if(empty($code)){
+			return returnMessage(false, 'Código inválido!', 'invalidCode', 'danger');
+		}
+
+		$this->ApiDB->update(array('ativo' => 0), 'securitycodes', $code['id']);
+
+		return returnMessage(true, 'Código válido!',	'validCode', 'success');
+	}
+
+	public function updatePassword()
+	{
+		$this->criptografarSenha();
+
+		$this->ApiDB->update(array('password' => $this->password), $this->tabela, $this->email, 'email');
+		return returnMessage(true, 'Senha alterada com sucesso!',	'updatedPassword', 'success');
 	}
 }
