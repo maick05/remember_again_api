@@ -16,9 +16,7 @@ class Cards extends Dados
 		if(isset($obj->nome))
 			$this->arrDados['word'] = $obj->nome;
 
-		$this->setProp('id', $obj);
-		$this->setProp('idcontainer', $obj);
-		$this->setProp('acao', $obj);
+		$this->setArrayProp($obj);
 	}
 
 	public function listByContainer()

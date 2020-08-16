@@ -12,9 +12,7 @@ class Containers extends Dados
 	public function __construct($obj=null)
 	{
 		$this->tabela = 'containers';
-		$this->setProp('id', $obj);
-		$this->setProp('idcard', $obj);
-		$this->setProp('acerto', $obj);
+		$this->setArrayProp($obj);
 	}
 
 	public function getNivel()

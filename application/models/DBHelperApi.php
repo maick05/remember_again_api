@@ -49,7 +49,7 @@ class DBHelperApi extends CI_Model
 
 		$row = $row->row_array();
 
-		if(count(array_keys($row)) == 1)
+		if(is_array($row) && count(array_keys($row)) == 1)
 			$row = current($row);
 
 		return returnMessage(false, 'Registro encontrado', 'empty', 'info', array('registro' => $row));

@@ -65,23 +65,6 @@ class Database extends CI_Model
 		return $this->db->get($tabela);
 	}
 
-	public function getByOld($tabela, $where, $campoWhere='id', $select='*')
-	{
-		$this->db->select($select);
-
-		if(is_array($campoWhere))
-			$this->db->where($campoWhere);
-		else
-			$this->db->where($campoWhere, $where);
-
-		$query = $this->db->get($tabela, 1);
-
-		if($query)
-			return $query->row_array();
-		else
-			return null;
-	}
-
 	public function getAllGroupBy($tabela, $colunaGroup, $where, $exists=false, $orderBy='id', $nulo=false)
 	{
 		$this->db->select($colunaGroup.", dtanswer, COUNT(*) as qtd");
@@ -96,6 +79,13 @@ class Database extends CI_Model
 		$this->db->group_by($colunaGroup);
 		$this->db->order_by($orderBy);
 
+		return $this->db->get($tabela);
+	}
+
+	public function get($tabela, $arrWhere, $select='*')
+	{
+		$this->db->select($select);
+		$this->montaWhere($arrWhere);
 		return $this->db->get($tabela);
 	}
 

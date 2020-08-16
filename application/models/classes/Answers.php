@@ -20,12 +20,7 @@ class Answers extends Dados
 		if(isset($obj->nome))
 			$this->arrDados['word'] = $obj->nome;
 
-		$this->setProp('id', $obj);
-		$this->setProp('idcard', $obj);
-		$this->setProp('acerto', $obj);
-		$this->setProp('acao', $obj);
-		$this->setProp('resposta', $obj);
-		$this->setProp('idcontainer', $obj);
+		$this->setArrayProp($obj);
 	}
 
 	public function setDicionarioErro()
@@ -35,7 +30,11 @@ class Answers extends Dados
 		);
 	}
 
-	public function listBy(){return $this->ApiDB->getAllByJoin($this->tabela, $this->idcard, array($this->joinAnswersCard), $this->tabelaVinculo.'.idcard');}
+	public function listBy()
+	{
+		$where['normal'] = array($this->tabelaVinculo.'.idcard' => $this->idcard);
+		return $this->ApiDB->getAllByJoin($this->tabela, $where, array($this->joinAnswersCard));
+	}
 
 	public function save()
 	{

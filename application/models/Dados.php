@@ -27,4 +27,11 @@ class Dados extends CI_Model
 		if(isset($obj->$atributo))
 			$this->$atributo = $obj->$atributo;
 	}
+
+	public function setArrayProp($obj)
+	{
+		$arrObj = (array) $obj;
+
+		foreach ($arrObj as $atributo => $value) {$this->setProp($atributo, $obj);}
+	}
 }

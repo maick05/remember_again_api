@@ -81,4 +81,14 @@ class ApiDB extends DBHelperApi
 
 		return $this->trataRow($row);
 	}
+
+	public function get($tabela, $arrWhere, $select='*')
+	{
+		$row = $this->Database->get($tabela, $arrWhere, $select='*');
+
+		if($this->Database->getError())
+			$this->printError();
+
+		return $this->trataRow($row);
+	}
 }
