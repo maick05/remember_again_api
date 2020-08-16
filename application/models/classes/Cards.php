@@ -49,4 +49,10 @@ class Cards extends Dados
 
 		return array_values($arr);
 	}
+
+	public function list()
+	{
+		$where['normal'] = array('iduser'=> $_SESSION['usuario']['id']);
+		return $this->ApiDB->getAllByJoin($this->tabela, $where);
+	}
 }

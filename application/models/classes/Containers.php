@@ -41,6 +41,7 @@ class Containers extends Dados
 
 	public function getQtdCardsByContainer()
 	{
+		$where['normal'] = array('iduser' => $_SESSION['usuario']['id']);
 		$where['or'] = array(
 			'#1' => 'dtanswer IS NULL',
 			'#3' => $this->montaQueryPeriodo()

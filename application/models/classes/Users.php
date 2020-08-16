@@ -75,7 +75,9 @@ class Users extends Dados
 
 	public function register()
 	{
+		$this->acao = 'incluir';
 		$save = $this->save();
+
 		if($save['sucesso'])
 			return $this->login();
 		return $save;

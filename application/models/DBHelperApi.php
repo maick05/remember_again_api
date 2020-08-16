@@ -17,9 +17,9 @@ class DBHelperApi extends CI_Model
 	{
 		$arr['mensagem'] = $this->db->last_query();
 		if($pre)
-			pre($arr);
+			pre($arr, 0);
 		echo json_encode($arr);
-		die;
+//		die;
 	}
 
 	public function trataResults($results)
